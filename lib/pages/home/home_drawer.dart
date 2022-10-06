@@ -38,24 +38,27 @@ class HomeDrawer extends StatelessWidget {
           height: 10,
         ),
         Expanded(child: GetBuilder<ActiveIndex>(builder: (snapshot) {
-          return ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                NavigationItems item = items.elementAt(index);
-                return Card(
-                  child: ListTile(
-                    iconColor: Colors.blue,
-                    onTap: () {
-                      snapshot.updateIndex(index);
-                    },
-                    selected: snapshot.index.value == index,
-                    selectedTileColor: Colors.blue.shade900,
-                    selectedColor: Colors.white,
-                    title: Text(item.text),
-                    leading: Icon(item.icon),
-                  ),
-                );
-              });
+          return FocusTraversalGroup(
+            key: UniqueKey(),
+            child: ListView.builder(
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  NavigationItems item = items.elementAt(index);
+                  return Card(
+                    child: ListTile(
+                      iconColor: Colors.blue,
+                      onTap: () {
+                        snapshot.updateIndex(index);
+                      },
+                      selected: snapshot.index.value == index,
+                      selectedTileColor: Colors.blue.shade900,
+                      selectedColor: Colors.white,
+                      title: Text(item.text),
+                      leading: Icon(item.icon),
+                    ),
+                  );
+                }),
+          );
         }))
       ]),
     );

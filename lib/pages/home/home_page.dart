@@ -1,7 +1,5 @@
-import 'dart:developer';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:get/state_manager.dart';
 import 'package:schoolbase/pages/home/ExamResult/exam_result.dart';
 import 'package:schoolbase/pages/home/FeePay/fee_pay.dart';
 import 'package:schoolbase/pages/home/NewAdmission/new_admisison.dart';
