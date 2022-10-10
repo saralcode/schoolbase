@@ -2,20 +2,15 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-
+import 'package:schoolbase/pages/home/NewAdmission/components/address_info.dart';
 
 class AdmissionItems {
   String label;
-  IconData icon;
-  AdmissionItems(this.label, this.icon);
-}
 
-List<AdmissionItems> listItems = [
-  AdmissionItems("Name", Icons.person),
-  AdmissionItems("Father's Name", Icons.person),
-  AdmissionItems("Mother's Name", Icons.person),
-  AdmissionItems("Aadhar", Icons.person),
-];
+  AdmissionItems(
+    this.label,
+  );
+}
 
 List<String> items = [
   'UKG',
@@ -44,64 +39,68 @@ class NewAdmission extends StatefulWidget {
 }
 
 class _NewAdmissionState extends State<NewAdmission> {
+  List<AdmissionItems> listItems = [
+    AdmissionItems("Student Name"),
+    AdmissionItems("Father's Name"),
+    AdmissionItems("Mother's Name"),
+    AdmissionItems("Occupation"),
+    AdmissionItems("Mobile No"),
+    AdmissionItems("Aadhar"),
+  ];
   final dateController = TextEditingController();
   FocusNode focusNode = FocusNode();
+  int gender = 0;
+  bool sameAsPermanentAddress=false;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        const Center(
-          child: Text(
-            "New Admission",
-            textScaleFactor: 2.5,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.pink,
-                shadows: [
-                  BoxShadow(
-                      color: Colors.grey, blurRadius: 5, offset: Offset(3, 3))
-                ]),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Expanded(
-          child: FocusTraversalGroup(
-              child: LayoutBuilder(builder: (context, constraints) {
-            return GridView(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: constraints.maxWidth > 1000
-                      ? 4
-                      : constraints.maxWidth > 600
-                          ? 3
-                          : constraints.maxWidth > 500
-                              ? 2
-                              : 1,
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
-                  mainAxisExtent: 80),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("New Admission"),
+      ),
+      body: LayoutBuilder(builder: (context, constraints) {
+        return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ListView(
               children: [
-                ...listItems.map((admissionItem) => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        // controller: controller,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(admissionItem.icon),
-                            hintText: admissionItem.label,
-                            label: Text(admissionItem.label)),
-                        onChanged: (value) {},
-                      ),
-                    )),
-                Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
+                const Text(
+                  "Personal Info",
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.indigo),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Expanded(
+                    child: GridView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 1000
+                          ? 4
+                          : constraints.maxWidth > 600
+                              ? 3
+                              : constraints.maxWidth > 500
+                                  ? 2
+                                  : 1,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 0,
+                      mainAxisExtent: 80),
+                  children: [
+                    ...listItems.map((admissionItem) => TextFormField(
+                          decoration: InputDecoration(
+                              // prefixIcon: Icon(admissionItem.icon),
+                              hintText: admissionItem.label,
+                              label: Text(admissionItem.label)),
+                          onChanged: (value) {},
+                        )),
+                    TextFormField(
                         controller: dateController,
                         onChanged: (value) {},
                         decoration: InputDecoration(
                           hintText: "DD/MM/YYYY",
                           label: const Text("DOB"),
-                          prefixIcon: IconButton(
+                          suffixIcon: IconButton(
                               onPressed: () async {
                                 DateTime? pickedDate = await showDatePicker(
                                     context: context, //context of current state
@@ -111,7 +110,6 @@ class _NewAdmissionState extends State<NewAdmission> {
                                     lastDate: DateTime.now());
 
                                 if (pickedDate != null) {
-                           
                                   String formattedDate =
                                       DateFormat('yyyy-MM-dd')
                                           .format(pickedDate);
@@ -124,11 +122,109 @@ class _NewAdmissionState extends State<NewAdmission> {
                               },
                               splashRadius: 25,
                               icon: const Icon(Icons.date_range)),
-                        ))),
+                        )),
+                  ],
+                )),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  "Gender",
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.indigo),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: SizedBox(
-                    child: Autocomplete(
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Male",
+                        textScaleFactor: 1.3,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Radio(
+                          value: 0,
+                          groupValue: gender,
+                          onChanged: (int? v) {
+                            setState(() {
+                              gender = v!;
+                            });
+                          }),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      const Text(
+                        "Female",
+                        textScaleFactor: 1.3,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Radio(
+                          value: 1,
+                          groupValue: gender,
+                          onChanged: (int? v) {
+                            setState(() {
+                              gender = v!;
+                            });
+                          }),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      const Text(
+                        "Other",
+                        textScaleFactor: 1.3,
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Radio(
+                          value: 2,
+                          groupValue: gender,
+                          onChanged: (int? v) {
+                            setState(() {
+                              gender = v!;
+                            });
+                          }),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  "Admission In",
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.indigo),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Expanded(
+                    child: GridView(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: constraints.maxWidth > 1000
+                          ? 4
+                          : constraints.maxWidth > 600
+                              ? 3
+                              : constraints.maxWidth > 500
+                                  ? 2
+                                  : 1,
+                      crossAxisSpacing: 20,
+                      mainAxisSpacing: 0,
+                      mainAxisExtent: 80),
+                  children: [
+                    Autocomplete(
                       fieldViewBuilder: (context, textEditingController,
                           focusNode, onFieldSubmitted) {
                         this.focusNode = focusNode;
@@ -147,44 +243,82 @@ class _NewAdmissionState extends State<NewAdmission> {
                             .contains(textEditingValue.text.toUpperCase()));
                       },
                     ),
-                  ),
+                    Autocomplete(
+                      fieldViewBuilder: (context, textEditingController,
+                          focusNode, onFieldSubmitted) {
+                        return TextFormField(
+                          controller: textEditingController,
+                          focusNode: focusNode,
+                          onEditingComplete: onFieldSubmitted,
+                          decoration: const InputDecoration(
+                              hintText: "Section",
+                              label: Text("Section"),
+                              prefixIcon: Icon(Icons.class_)),
+                        );
+                      },
+                      optionsBuilder: (textEditingValue) {
+                        return section.where((element) => element
+                            .contains(textEditingValue.text.toUpperCase()));
+                      },
+                    ),
+                  ],
+                )),
+                const SizedBox(
+                  height: 30,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Autocomplete(
-                    fieldViewBuilder: (context, textEditingController,
-                        focusNode, onFieldSubmitted) {
-                      return TextFormField(
-                        controller: textEditingController,
-                        focusNode: focusNode,
-                        onEditingComplete: onFieldSubmitted,
-                        decoration: const InputDecoration(
-                            hintText: "Section",
-                            label: Text("Section"),
-                            prefixIcon: Icon(Icons.class_)),
-                      );
-                    },
-                    optionsBuilder: (textEditingValue) {
-                      return section.where((element) => element
-                          .contains(textEditingValue.text.toUpperCase()));
-                    },
-                  ),
+                const Text(
+                  "Present Address",
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.indigo),
                 ),
+                const SizedBox(
+                  height: 20,
+                ),
+                const AddressInfo(),
+                const SizedBox(
+                  height: 20,
+                ),
+                const Text(
+                  "Permanent Address",
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500, color: Colors.indigo),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Checkbox(value: sameAsPermanentAddress, onChanged: (bool ? v) {
+                      setState(() {
+                        sameAsPermanentAddress=v!;
+                      });
+                    }),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    const Text(
+                      "Same as Present Address",
+                      textScaleFactor: 1.2,
+                    ),
+                  ],
+                ), 
+                const SizedBox(height: 20,), 
+                const
+                    AddressInfo()
               ],
-            );
-          })),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
+            ));
+      }),
+      persistentFooterButtons: [
         ElevatedButton(
             onPressed: () {
-              Get.dialog(const Dialog(
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text("Successfully Saved"),
-                ),
-              ));
+              Get.snackbar("Saved", "Student Successfully saved!",
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: Colors.blue.shade500.withOpacity(0.8),
+                  colorText: Colors.white);
             },
             child: const Text("Save"))
       ],

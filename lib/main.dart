@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue),
               ),
+              labelStyle: TextStyle(fontSize: 18),
               errorBorder: OutlineInputBorder(borderSide: BorderSide(width: 2, color: Colors.red)) ,
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(width: 2, color: Colors.blue)))),

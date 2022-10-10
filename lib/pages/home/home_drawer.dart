@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
+import 'package:schoolbase/pages/home/ExamResult/exam_result.dart';
+import 'package:schoolbase/pages/home/FeePay/fee_pay.dart';
+import 'package:schoolbase/pages/home/students/manage_students.dart';
 import 'package:schoolbase/state/home_page_controller.dart';
 import 'package:get/get.dart';
 
 class NavigationItems {
   IconData icon;
   String text;
-  NavigationItems(this.icon, this.text);
+  Widget page;
+  NavigationItems(this.icon, this.text, this.page);
 }
 
-List items = [
-  NavigationItems(Icons.add, "New Admission"),
-  NavigationItems(Icons.edit, "Update Students"),
-  NavigationItems(Icons.attach_money, "Fee Pay"),
-  NavigationItems(Icons.book_sharp, "Exam Result"),
+List<NavigationItems> navigationItems = [
+  NavigationItems(Icons.person_add, "Manage Students", const ManageStudents()),
+  NavigationItems(Icons.attach_money, "Fee Pay", const FeePay() ),
+  NavigationItems(Icons.book_sharp, "Exam Result", const ExamResult()),
+  NavigationItems(Icons.settings, "Setting", const FeePay()),
 ];
 
 class HomeDrawer extends StatelessWidget {
@@ -41,9 +45,9 @@ class HomeDrawer extends StatelessWidget {
           return FocusTraversalGroup(
             key: UniqueKey(),
             child: ListView.builder(
-                itemCount: items.length,
+                itemCount: navigationItems.length,
                 itemBuilder: (context, index) {
-                  NavigationItems item = items.elementAt(index);
+                  NavigationItems item = navigationItems.elementAt(index);
                   return Card(
                     child: ListTile(
                       iconColor: Colors.blue,
