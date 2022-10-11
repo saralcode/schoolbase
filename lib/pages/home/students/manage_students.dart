@@ -62,9 +62,6 @@ class _ManageStudentsState extends State<ManageStudents> {
                               label: Text(e.text)),
                         )
                         .toList(),
-                    const SizedBox(
-                      width: 10,
-                    ),
                     ElevatedButton.icon(
                         style: const ButtonStyle(
                             backgroundColor:
@@ -73,10 +70,23 @@ class _ManageStudentsState extends State<ManageStudents> {
                             textStyle: MaterialStatePropertyAll(TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold))),
                         onPressed: () {
-                          Get.to(() => const PrintIt());
+                          Get.to(() => const NewAdmissionForm(forClass: ForClass.below));
                         },
                         icon: const Icon(Icons.print),
-                        label: const Text("Print Form"))
+                        label: const Text("Admission Form")), 
+                        ElevatedButton.icon(
+                        style: const ButtonStyle(
+                            backgroundColor:
+                                MaterialStatePropertyAll(Colors.deepOrange),
+                            fixedSize: MaterialStatePropertyAll(Size(300, 80)),
+                            textStyle: MaterialStatePropertyAll(TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold))),
+                        onPressed: () {
+                          Get.to(() =>
+                              const NewAdmissionForm(forClass: ForClass.eleven));
+                        },
+                        icon: const Icon(Icons.print),
+                        label: const Text("Class 11 Form"))
                   ]);
             },
           ),
